@@ -3,6 +3,7 @@ package ir.tadbir.app.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ir.tadbir.app.domain.model.EnergyLevel
+import ir.tadbir.app.domain.model.InboxItem
 import ir.tadbir.app.domain.model.Priority
 import ir.tadbir.app.domain.model.Task
 import ir.tadbir.app.domain.model.TaskCategory
@@ -71,3 +72,30 @@ data class RoutineEntity(
     val streak: Int,
     val lastCompletedDate: String?
 )
+
+@Entity(tableName = "inbox_items")
+data class InboxItemEntity(
+    @PrimaryKey val id: String,
+    val text: String,
+    val createdAt: Long,
+    val estimateMin: Int,
+    val energy: String
+) {
+    fun toDomain(): InboxItem = InboxItem(
+        id = id,
+        text = text,
+        createdAt = createdAt,
+        estimateMin = estimateMin,
+        energy = EnergyLevel.valueOf(energy)
+    )
+
+    companion object {
+        fun fromDomain(item: InboxItem): InboxItemEntity = InboxItemEntity(
+            id = item.id,
+            text = item.text,
+            createdAt = item.createdAt,
+            estimateMin = item.estimateMin,
+            energy = item.energy.name
+        )
+    }
+}

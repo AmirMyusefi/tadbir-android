@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.tadbir.app.domain.model.Task
+import ir.tadbir.app.ui.components.pageBottomInset
 import ir.tadbir.app.ui.theme.AmberGold
 import ir.tadbir.app.ui.theme.CyanAccent
 import ir.tadbir.app.ui.theme.EmeraldPrimary
@@ -45,7 +46,7 @@ fun MatrixScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
-        contentPadding = PaddingValues(top = 16.dp, bottom = 100.dp),
+        contentPadding = PaddingValues(top = 16.dp, bottom = pageBottomInset()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {

@@ -1,18 +1,24 @@
 package ir.tadbir.app.data.local
 
 import ir.tadbir.app.core.util.JalaliDate
+import ir.tadbir.app.domain.model.InboxItem
+import ir.tadbir.app.domain.model.Priority
 import ir.tadbir.app.domain.model.Routine
 import ir.tadbir.app.domain.model.Task
+import ir.tadbir.app.domain.model.TaskCategory
 import ir.tadbir.app.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao,
-    private val routineDao: RoutineDao
+    private val routineDao: RoutineDao,
+    private val inboxDao: InboxDao
 ) : TaskRepository {
 
     override fun getTasksForDate(dateKey: String): Flow<List<Task>> {
@@ -89,5 +95,35 @@ class TaskRepositoryImpl @Inject constructor(
         routineDao.insertOrUpdate(
             routine.copy(streak = newStreak, lastCompletedDate = newDate)
         )
+    }
+
+    override fun getInboxItems(): Flow<List<InboxItem>> {
+        return inboxDao.getInboxItems().map { list ->
+            list.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun insertInboxItem(item: InboxItem) {
+        inboxDao.insertOrUpdate(InboxItemEntity.fromDomain(item))
+    }
+
+    override suspend fun deleteInboxItem(id: String) {
+        inboxDao.deleteItem(id)
+    }
+
+    override suspend fun convertInboxItemToTask(itemId: String, dateKey: String, startTime: String?) {
+        val allItems = inboxDao.getInboxItems().firstOrNull() ?: emptyList()
+        val item = allItems.firstOrNull { it.id == itemId } ?: return
+        val task = Task(
+            id = UUID.randomUUID().toString(),
+            title = item.text,
+            dateKey = dateKey,
+            startTime = startTime,
+            durationMin = item.estimateMin,
+            priority = Priority.MEDIUM,
+            category = TaskCategory.PERSONAL
+        )
+        taskDao.insertOrUpdate(TaskEntity.fromDomain(task))
+        inboxDao.deleteItem(itemId)
     }
 }

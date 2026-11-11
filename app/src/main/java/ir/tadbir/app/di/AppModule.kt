@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ir.tadbir.app.data.local.InboxDao
 import ir.tadbir.app.data.local.RoutineDao
 import ir.tadbir.app.data.local.TadbirDatabase
 import ir.tadbir.app.data.local.TaskDao
@@ -33,6 +34,9 @@ object AppModule {
 
     @Provides
     fun provideRoutineDao(db: TadbirDatabase): RoutineDao = db.routineDao()
+
+    @Provides
+    fun provideInboxDao(db: TadbirDatabase): InboxDao = db.inboxDao()
 
     @Provides
     @Singleton

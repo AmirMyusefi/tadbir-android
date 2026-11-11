@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.tadbir.app.core.util.JalaliDate
+import ir.tadbir.app.ui.components.pageBottomInset
 import ir.tadbir.app.ui.theme.EmeraldPrimary
 import ir.tadbir.app.ui.theme.RoseRed
 
@@ -132,7 +133,7 @@ fun PomodoroScreen(
         // Action Controls & Session Counter
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(bottom = 90.dp)
+            modifier = Modifier.padding(bottom = pageBottomInset())
         ) {
             Text(
                 text = "جلسات انجام شده امروز: ${JalaliDate.toFa(state.completedSessionsCount)} 🍅",

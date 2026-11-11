@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RoomDatabase
-import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -45,8 +44,25 @@ interface RoutineDao {
     suspend fun getRoutineById(id: String): RoutineEntity?
 }
 
-@Database(entities = [TaskEntity::class, RoutineEntity::class], version = 1, exportSchema = false)
+@Dao
+interface InboxDao {
+    @Query("SELECT * FROM inbox_items ORDER BY createdAt DESC")
+    fun getInboxItems(): Flow<List<InboxItemEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(item: InboxItemEntity)
+
+    @Query("DELETE FROM inbox_items WHERE id = :id")
+    suspend fun deleteItem(id: String): Int
+}
+
+@Database(
+    entities = [TaskEntity::class, RoutineEntity::class, InboxItemEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class TadbirDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun routineDao(): RoutineDao
+    abstract fun inboxDao(): InboxDao
 }

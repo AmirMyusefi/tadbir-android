@@ -60,6 +60,7 @@ import ir.tadbir.app.core.util.JalaliDate
 import ir.tadbir.app.domain.model.Priority
 import ir.tadbir.app.domain.model.Task
 import ir.tadbir.app.domain.model.TaskCategory
+import ir.tadbir.app.ui.components.pageBottomInset
 import ir.tadbir.app.ui.theme.AmberGold
 import ir.tadbir.app.ui.theme.CyanAccent
 import ir.tadbir.app.ui.theme.EmeraldPrimary
@@ -80,7 +81,7 @@ fun DailyScreen(
                 containerColor = EmeraldPrimary,
                 contentColor = Color.White,
                 shape = CircleShape,
-                modifier = Modifier.padding(bottom = 80.dp) // Leave space for Glass Bottom Bar
+                modifier = Modifier.padding(bottom = pageBottomInset())
             ) {
                 Icon(Icons.Rounded.Add, contentDescription = "افزودن کار")
             }
@@ -90,7 +91,7 @@ fun DailyScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = pageBottomInset()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Header: Date & Gamification (XP, Level, Streak)

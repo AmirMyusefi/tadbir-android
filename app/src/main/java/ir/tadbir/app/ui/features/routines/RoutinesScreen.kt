@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ir.tadbir.app.core.util.JalaliDate
 import ir.tadbir.app.domain.model.Routine
+import ir.tadbir.app.ui.components.pageBottomInset
 import ir.tadbir.app.ui.theme.AmberGold
 import ir.tadbir.app.ui.theme.EmeraldPrimary
 
@@ -69,7 +70,7 @@ fun RoutinesScreen(
                 containerColor = EmeraldPrimary,
                 contentColor = Color.White,
                 shape = CircleShape,
-                modifier = Modifier.padding(bottom = 80.dp)
+                modifier = Modifier.padding(bottom = pageBottomInset())
             ) {
                 Icon(Icons.Rounded.Add, contentDescription = "عادت جدید")
             }
@@ -79,7 +80,7 @@ fun RoutinesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = pageBottomInset()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
