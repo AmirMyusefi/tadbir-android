@@ -17,10 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material.icons.rounded.Inbox
 import androidx.compose.material.icons.rounded.Repeat
+import androidx.compose.material.icons.rounded.Spa
 import androidx.compose.material.icons.rounded.Timer
+import androidx.compose.material.icons.rounded.TrackChanges
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,10 +58,13 @@ import ir.tadbir.app.ui.components.glass.LiquidBottomTab
 import ir.tadbir.app.ui.components.glass.LiquidBottomTabs
 import ir.tadbir.app.ui.features.analytics.AnalyticsRoute
 import ir.tadbir.app.ui.features.daily.DailyRoute
+import ir.tadbir.app.ui.features.goals.GoalsRoute
 import ir.tadbir.app.ui.features.inbox.InboxRoute
 import ir.tadbir.app.ui.features.matrix.MatrixRoute
 import ir.tadbir.app.ui.features.pomodoro.PomodoroRoute
+import ir.tadbir.app.ui.features.projects.ProjectsRoute
 import ir.tadbir.app.ui.features.routines.RoutinesRoute
+import ir.tadbir.app.ui.features.wellness.WellnessRoute
 import ir.tadbir.app.ui.theme.EmeraldPrimary
 import ir.tadbir.app.ui.theme.Sizes
 import ir.tadbir.app.ui.theme.Spacing
@@ -68,6 +74,9 @@ sealed class Screen(val route: String) {
     data object Routines : Screen("routines")
     data object Pomodoro : Screen("pomodoro")
     data object Matrix : Screen("matrix")
+    data object Goals : Screen("goals")
+    data object Projects : Screen("projects")
+    data object Wellness : Screen("wellness")
     data object Inbox : Screen("inbox")
     data object Analytics : Screen("analytics")
 }
@@ -80,11 +89,13 @@ data class AppTab(
 
 val AppTabs = listOf(
     AppTab(Screen.Daily.route, "امروز", Icons.Rounded.CalendarToday),
-    AppTab(Screen.Routines.route, "عادت‌ها", Icons.Rounded.Repeat),
+    AppTab(Screen.Goals.route, "اهداف", Icons.Rounded.TrackChanges),
+    AppTab(Screen.Projects.route, "پروژه‌ها", Icons.Rounded.Folder),
     AppTab(Screen.Pomodoro.route, "پومودورو", Icons.Rounded.Timer),
+    AppTab(Screen.Routines.route, "عادت‌ها", Icons.Rounded.Repeat),
+    AppTab(Screen.Wellness.route, "سلامت", Icons.Rounded.Spa),
     AppTab(Screen.Matrix.route, "ماتریس", Icons.Rounded.GridView),
-    AppTab(Screen.Inbox.route, "صندوق", Icons.Rounded.Inbox),
-    AppTab(Screen.Analytics.route, "آمار", Icons.Rounded.BarChart)
+    AppTab(Screen.Inbox.route, "صندوق", Icons.Rounded.Inbox)
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +134,6 @@ fun TadbirAppShell() {
                             )
                         }
 
-                        // App Badge: Tadbir Pro / Level
                         Surface(
                             shape = RoundedCornerShape(10.dp),
                             color = EmeraldPrimary.copy(alpha = 0.15f),
@@ -163,8 +173,11 @@ fun TadbirAppShell() {
                             .padding(top = padding.calculateTopPadding())
                     ) {
                         composable(Screen.Daily.route) { DailyRoute() }
-                        composable(Screen.Routines.route) { RoutinesRoute() }
+                        composable(Screen.Goals.route) { GoalsRoute() }
+                        composable(Screen.Projects.route) { ProjectsRoute() }
                         composable(Screen.Pomodoro.route) { PomodoroRoute() }
+                        composable(Screen.Routines.route) { RoutinesRoute() }
+                        composable(Screen.Wellness.route) { WellnessRoute() }
                         composable(Screen.Matrix.route) { MatrixRoute() }
                         composable(Screen.Inbox.route) { InboxRoute() }
                         composable(Screen.Analytics.route) { AnalyticsRoute() }
@@ -178,7 +191,7 @@ fun TadbirAppShell() {
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
                     .navigationBarsPadding()
-                    .padding(horizontal = 12.dp, vertical = Spacing.xs)
+                    .padding(horizontal = 8.dp, vertical = Spacing.xs)
             ) {
                 LiquidBottomTabs(
                     selectedTabIndex = { chosenIndex },
@@ -193,7 +206,7 @@ fun TadbirAppShell() {
                         }
                     },
                     backdrop = backdrop,
-                    backgroundColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+                    backgroundColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f),
                     indicatorColor = EmeraldPrimary.copy(alpha = 0.25f),
                     activeIconColor = EmeraldPrimary,
                     tabsCount = AppTabs.size,
@@ -220,7 +233,7 @@ fun TadbirAppShell() {
                             )
                             Text(
                                 text = tab.title,
-                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
                                 color = if (index == chosenIndex) EmeraldPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
                             )
                         }
